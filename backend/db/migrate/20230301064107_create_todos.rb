@@ -3,7 +3,7 @@ class CreateTodos < ActiveRecord::Migration[6.1]
     create_table :todos do |t|
       t.string :title
       t.text :description
-      t.boolean :completed, default: false
+      t.boolean :completed, defatlt: false
       t.string :category
       t.timestamps
     end

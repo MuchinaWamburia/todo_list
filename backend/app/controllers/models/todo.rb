@@ -1,3 +1,10 @@
 class Todo <ActiveRecord::Base
-  has_many :categories
+  belongs_to :category
+ validates :title, presence: true
+ validates :category_id, presence: true
+
+  def as_json(options={})
+    super(only: [:id, :title, :description, :completed],
+    include: { category: { only: [:name] } })
+  end
 end

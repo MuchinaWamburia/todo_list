@@ -1,3 +1,3 @@
 class Category <ActiveRecord::Base
-  belongs_to :todo
+  has_many :todos
 end
