@@ -1,17 +1,20 @@
-This is a React functional component that displays a Todo List. The list is fetched from a backend API at http://localhost:9292/todos and displayed in a table.
+# React Todo List App
+This is a simple Todo List App built using React. It allows users to create, read, update and delete tasks. The app is built using React and communicates with a Ruby API backend that uses SQLite database to store the tasks.
 
-The component uses the useState and useEffect hooks to manage state and fetch data respectively. The useState hook is used to create a todos state variable which is initially set to an empty array. The useEffect hook is used to fetch the todo list from the API when the component mounts.
+## Installation
+To run this app, you need to have Node.js installed on your machine. You can download it by:
+- Clone the repository to your local machine
+- Navigate to the project root directory and run npm install to install the required dependencies.
+- Run npm start to start the app.
 
-The component has several functions to handle the various CRUD operations on the Todo list.
+### Usage
+Once the app is running, you can use the Todo Form to create new tasks. You can view all the tasks in the list below the form, and edit or delete them as required.
 
-handleTodoCreate function is used to create a new todo item by sending a POST request to the API. The new item is added to the todos state variable using the setTodos function.
+### Contributing
+Contributions to this app are welcome. If you'd like to contribute, please follow these steps:
 
-handleTodoUpdate function is used to update an existing todo item by sending a PUT request to the API. The updated item is then reflected in the todos state variable using the setTodos function.
-
-handleTodoToggleCompleted function is used to toggle the completed status of a todo item by sending a PATCH request to the API. The updated item is then reflected in the todos state variable using the setTodos function.
-
-handleTodoDelete function is used to delete a todo item by sending a DELETE request to the API. The deleted item is removed from the todos state variable using the setTodos function.
-
-The render function returns a table that displays the list of todo items. The map function is used to iterate over the todos array and display each item in a table row. Each table row has a button to toggle the completed status and a button to delete the item.
-
-Finally, the component also renders a TodoForm component which allows users to create new todo items. The handleTodoCreate function is passed as a prop to this component so that it can create new todo items in the main App component.
+-Fork this repository
+-Create a new branch (git checkout -b feature/your-feature-name)
+-Commit your changes (git commit -m 'Add some feature')
+-Push to the branch (git push origin feature/your-feature-name)
+-Create a new pull request.
