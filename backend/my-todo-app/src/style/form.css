@@ -1,0 +1,12 @@
+body {
+  margin: 0;
+  font-family:Lucida;
+  font-size: medium;
+ }
+form {
+  flex-direction: column;
+
+}
+
+
+

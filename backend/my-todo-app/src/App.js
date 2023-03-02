@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import './App.css';
+import './style/App.css'
 import TodoForm from './components/Todoform';
-// import TodoList from './components/TodoList';
+
 
 function App() {
   const [todos, setTodos] = useState([]);
@@ -20,32 +20,66 @@ function App() {
     }
   };
 
-  const handleTodoCreate = async (title, description, category) => {
+  const handleTodoCreate = e =>
+  {
+    e.preventDefault();
+    const data ={title: 'title', description: 'description', category: 'category'}
+    console.log(data)
+
+    fetch ("http://localhost:9292/todos",{
+      method: 'POST',
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+    },
+        body: JSON.stringify(data),
+        })
+      .then((r) => r.json())
+      .then((response) => 
+      {
+        console.log(response) 
+        
+      });
+  
+
+    //   setTitle("");  setUser(""); setContent("");
+    };
+     
+
+  const handleTodoUpdate = async (id, todo) => {
     try {
-      const response = await fetch('http://localhost:9292/todos', {
-        method: 'POST',
+      const response = await fetch(`http://localhost:9292/todos/${id}`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ title, description, category })
+        body: JSON.stringify(todo)
       });
-
+  
       const data = await response.json();
-      setTodos([...todos, data]);
+      setTodos(todos.map((t) => (t.id === id ? data : t)));
     } catch (error) {
       console.error(error);
     }
   };
-
-  const handleToggleCompleted = async (id, completed) => {
-    const updatedTodo = { completed: !completed };
-    await fetch(`http://localhost:9292/todos/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(updatedTodo),
-    });
-    fetchTodos();
+  
+  const handleTodoToggleCompleted = async (id, todo) => {
+    try {
+      const response = await fetch(`http://localhost:9292/todos/${id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ completed: todo.completed })
+      });
+  
+      const data = await response.json();
+      setTodos(todos.map((t) => (t.id === id ? data : t)));
+    } catch (error) {
+      console.error(error);
+    }
   };
+  
 
   const handleTodoDelete = async (id) => {
     try {
@@ -77,7 +111,7 @@ function App() {
               <td>{todo.description}</td>
               <td>{todo.category}</td>
               <td>
-              <button onClick={() => handleToggleCompleted(todo.id, todo.completed)}>
+              <button onClick={() => handleTodoToggleCompleted(todo.id, todo.completed)}>
                 {todo.completed ? 'Yes' : 'No'}
               </button></td>
               <td>

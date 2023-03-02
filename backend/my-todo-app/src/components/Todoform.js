@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 
 function TodoForm(props) {
   const [title, setTitle] = useState('');
@@ -8,10 +7,7 @@ function TodoForm(props) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    const todo = { title, description, category };
-    props.handleAdd(todo);
-
+    props.onCreate(title, description, category);
     setTitle('');
     setDescription('');
     setCategory('');
@@ -19,41 +15,30 @@ function TodoForm(props) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div>
-        <label>Title:</label>
-        <input
-          id="title"
-          type="text"
-          value={title}
-          onChange={(event) => setTitle(event.target.value)}
-        />
-      </div>
-      <div>
-        <label >Description:</label>
-        <textarea
-          id="description"
-          value={description}
-          onChange={(event) => setDescription(event.target.value)}
-        ></textarea>
-      </div>
-      <div>
-        <label>Category:</label>
-        <input
-          id="category"
-          type="text"
-          value={category}
-          onChange={(event) => setCategory(event.target.value)}
-        />
-      </div>
-      <div>
-        <button type="submit">Add Todo</button>
-      </div>
+      <label htmlFor="title">Title:</label>
+      <input
+        type="text"
+        id="title"
+        value={title}
+        onChange={(event) => setTitle(event.target.value)}
+      />
+      <label htmlFor="description">Description:</label>
+      <input
+        type="text"
+        id="description"
+        value={description}
+        onChange={(event) => setDescription(event.target.value)}
+      />
+      <label htmlFor="category">Category:</label>
+      <input
+        type="text"
+        id="category"
+        value={category}
+        onChange={(event) => setCategory(event.target.value)}
+      />
+      <button type="submit">Add Todo</button>
     </form>
   );
 }
-
-TodoForm.propTypes = {
-  handleAdd: PropTypes.func.isRequired,
-};
 
 export default TodoForm;
