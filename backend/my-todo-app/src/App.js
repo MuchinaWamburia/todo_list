@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import TodoForm from './components/Todoform';
-import TodoList from './components/TodoList';
+// import TodoList from './components/TodoList';
 
 function App() {
   const [todos, setTodos] = useState([]);
@@ -37,6 +37,16 @@ function App() {
     }
   };
 
+  const handleToggleCompleted = async (id, completed) => {
+    const updatedTodo = { completed: !completed };
+    await fetch(`http://localhost:9292/todos/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updatedTodo),
+    });
+    fetchTodos();
+  };
+
   const handleTodoDelete = async (id) => {
     try {
       await fetch(`http://localhost:9292/todos/${id}`, { method: 'DELETE' });
@@ -50,7 +60,7 @@ function App() {
     <div className="App">
       <h1>Todo List</h1>
       <TodoForm onCreate={handleTodoCreate} />
-      <table>
+      <table >
         <thead>
           <tr>
             <th>Title</th>
@@ -66,7 +76,10 @@ function App() {
               <td>{todo.title}</td>
               <td>{todo.description}</td>
               <td>{todo.category}</td>
-              <td>{todo.completed ? 'Yes' : 'No'}</td>
+              <td>
+              <button onClick={() => handleToggleCompleted(todo.id, todo.completed)}>
+                {todo.completed ? 'Yes' : 'No'}
+              </button></td>
               <td>
                 <button onClick={() => handleTodoDelete(todo.id)}>
                   Delete
