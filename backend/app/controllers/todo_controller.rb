@@ -48,15 +48,5 @@ class TodoController < Sinatra::Base
     status 204
   end
   
-  # Now, you can use any HTTP client (such as Postman or cURL) to interact with the API. 
-  # GET /todos - Get all todos
-  # GET /todos/:id - Get a specific todo
-  # POST /todos - Create a new todo
-  # PUT /todos/:id - Update a todo
-  # DELETE /todos/:id - Delete a todo
- 
-  
-  
-  
   
 end

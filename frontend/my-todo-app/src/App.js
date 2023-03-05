@@ -20,65 +20,88 @@ function App() {
     }
   };
 
-  const handleTodoCreate = e =>
-  {
-    e.preventDefault();
-    const data ={title: 'title', description: 'description', category: 'category'}
-    console.log(data)
-
-    fetch ("http://localhost:9292/todos",{
+  function handleTodoCreate(title, description, category) {
+    const data = {
+      title: title,
+      description: description,
+      category: category
+    };
+  
+    fetch(`http://localhost:9292/todos`, {
       method: 'POST',
       headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log(data);
+        setTodos([...todos, data]);
+      })
+      .catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+      });
+  }
+  fetch(`http://localhost:9292/todos/`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
     },
-        body: JSON.stringify(data),
-        })
-      .then((r) => r.json())
-      .then((response) => 
-      {
-        console.log(response) 
-        
-      });
-  
+    body: JSON.stringify({
+      title: 'Buy Milk and Eggs',
+      description: 'Go to the grocery store and buy milk and eggs',
+      category: 'Groceries',
+      completed: false
+    })
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log('Todo updated successfully:', data);
+    })
+    .catch(error => {
+      console.error('There was a problem updating the todo:', error);
+    });
 
-    //   setTitle("");  setUser(""); setContent("");
-    };
-     
-
-  const handleTodoUpdate = async (id, todo) => {
-    try {
-      const response = await fetch(`http://localhost:9292/todos/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(todo)
-      });
   
-      const data = await response.json();
-      setTodos(todos.map((t) => (t.id === id ? data : t)));
-    } catch (error) {
-      console.error(error);
-    }
+  
+  
+  // const handleTodoToggleCompleted = async (id, todo) => {
+  //   try {
+  //     const response = await fetch(`http://localhost:9292/todos/${id}`, {
+  //       method: 'PATCH',
+  //       headers: {
+  //         'Content-Type': 'application/json'
+  //       },
+  //       body: JSON.stringify({ completed: todo.completed })
+  //     });
+  
+  //     const data = await response.json();
+  //     setTodos(todos.map((t) => (t.id === id ? data : t)));
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+  const handleTodoToggleCompleted = (id) => {
+    const updatedTodos = todos.map((todo) => {
+      if (todo.id === id) {
+        return { ...todo, completed: !todo.completed };
+      }
+      return todo;
+    });
+    setTodos(updatedTodos);
   };
   
-  const handleTodoToggleCompleted = async (id, todo) => {
-    try {
-      const response = await fetch(`http://localhost:9292/todos/${id}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ completed: todo.completed })
-      });
-  
-      const data = await response.json();
-      setTodos(todos.map((t) => (t.id === id ? data : t)));
-    } catch (error) {
-      console.error(error);
-    }
-  };
   
 
   const handleTodoDelete = async (id) => {
@@ -101,26 +124,30 @@ function App() {
             <th>Description</th>
             <th>Category</th>
             <th>Completed</th>
+            <th>Action</th>
             <th></th>
           </tr>
         </thead>
         <tbody>
-          {todos.map((todo) => (
-            <tr key={todo.id}>
-              <td>{todo.title}</td>
-              <td>{todo.description}</td>
-              <td>{todo.category}</td>
-              <td>
-              <button onClick={() => handleTodoToggleCompleted(todo.id, todo.completed)}>
-                {todo.completed ? 'Yes' : 'No'}
-              </button></td>
-              <td>
-                <button onClick={() => handleTodoDelete(todo.id)}>
-                  Delete
-                </button>
-              </td>
-            </tr>
-          ))}
+        {todos.map((todo) => {
+  console.log(todo.category);
+  return (
+    <tr key={todo.id}>
+      <td>{todo.title}</td>
+      <td>{todo.description}</td>
+      <td>{todo.category}</td>
+      <td>
+        <button onClick={() => handleTodoToggleCompleted(todo.id)}>
+          {todo.completed ? 'Yes' : 'No'}
+        </button>
+      </td>
+      <td>
+        <button onClick={() => handleTodoDelete(todo.id)}>
+          Delete
+        </button>
+      </td>
+    </tr>
+  );})}
         </tbody>
       </table>
     </div>
